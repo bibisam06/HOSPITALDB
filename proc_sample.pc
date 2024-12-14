@@ -606,70 +606,76 @@ void view_departments() {
 
 /*---------------------------------------------------------*/
 void reserve_tuple() {
+    // SQL 변수 선언 섹션 시작
     EXEC SQL BEGIN DECLARE SECTION;
-    varchar v_res_pt[100];      // ȯ�� ����
-    varchar v_res_doctor[100]; // �ǻ� �̸�
-    varchar v_res_dept[100];   // �����
-    varchar v_res_date[100];   // ���� ��¥ (YYYY-MM-DD HH24:MI ����)
-
-    char sqlstmt[1000];        // SQL ���� ����
+    varchar v_res_pt[100];      // 환자 이름
+    varchar v_res_birth[20];    // 환자 생년월일 (YYYY-MM-DD 형식)
+    varchar v_res_phone[20];    // 전화번호
+    varchar v_res_gender[10];   // 성별 (남/여)
+    varchar v_res_dept[100];    // 진료과
+    varchar v_res_date[100];    // 예약 날짜 (YYYY-MM-DD HH24:MI 형식)
     EXEC SQL END DECLARE SECTION;
 
-    char confirm;
-    int x, y;
+    char confirm;               // 예약 확인 여부를 받을 변수
+    int x, y;                   // 화면 출력 좌표 변수
 
-    // ȭ�� �ʱ�ȭ �� ���ø� ���
+    // 화면 초기화 및 예약 입력 화면 출력
     clrscr();
     print_screen("scr_add_reservation.txt");
 
-    // ����� �Է� �ޱ�
+    // 예약 정보 입력 받기
     x = 39;
     y = 6;
-    gotoxy(x, y);
-    printf("����: ");
-    gets(v_res_pt.arr);
-    v_res_pt.len = strlen(v_res_pt.arr);
+    gotoxy(x, y);               // 입력 위치 설정
+    printf("환자 이름: ");
+    fgets(v_res_pt.arr, sizeof(v_res_pt.arr), stdin); // 환자 이름 입력
+    v_res_pt.len = strlen(v_res_pt.arr) - 1;         // 개행 문자 제거
 
-    printf("\n                            �ǻ�: ");
-    gets(v_res_doctor.arr);
-    v_res_doctor.len = strlen(v_res_doctor.arr);
+    printf("\n                            생년월일 (YYYY-MM-DD): ");
+    fgets(v_res_birth.arr, sizeof(v_res_birth.arr), stdin); // 생년월일 입력
+    v_res_birth.len = strlen(v_res_birth.arr) - 1;
 
-    printf("\n                            �����: ");
-    gets(v_res_dept.arr);
-    v_res_dept.len = strlen(v_res_dept.arr);
+    printf("\n                            전화번호: ");
+    fgets(v_res_phone.arr, sizeof(v_res_phone.arr), stdin); // 전화번호 입력
+    v_res_phone.len = strlen(v_res_phone.arr) - 1;
 
-    printf("\n                            ���� �� (YYYY-MM-DD HH24:MI): ");
-    gets(v_res_date.arr);
-    v_res_date.len = strlen(v_res_date.arr);
+    printf("\n                            성별 (남/여): ");
+    fgets(v_res_gender.arr, sizeof(v_res_gender.arr), stdin); // 성별 입력
+    v_res_gender.len = strlen(v_res_gender.arr) - 1;
 
-    // �Է� Ȯ�� �� ���� �߰�
-    printf("\n�Է��Ͻ� ������ �����Ͻðڽ��ϱ�? (y/n): ");
-    confirm = getchar();
-    while (getchar() != '\n'); // �Է� ���� �ʱ�ȭ
+    printf("\n                            진료과: ");
+    fgets(v_res_dept.arr, sizeof(v_res_dept.arr), stdin); // 진료과 입력
+    v_res_dept.len = strlen(v_res_dept.arr) - 1;
+
+    printf("\n                            예약일 (YYYY-MM-DD HH24:MI): ");
+    fgets(v_res_date.arr, sizeof(v_res_date.arr), stdin); // 예약 날짜 입력
+    v_res_date.len = strlen(v_res_date.arr) - 1;
+
+    // 입력 내용 확인 및 데이터베이스에 저장
+    printf("\n입력하신 정보를 저장하시겠습니까? (y/n): ");
+    confirm = getchar();        // 사용자 확인 입력 받기
+    while (getchar() != '\n');  // 입력 버퍼 초기화
 
     if (confirm == 'y' || confirm == 'Y') {
-        // INSERT SQL ����
-        sprintf(sqlstmt, "INSERT INTO reservation (res_pt, res_doctor, res_dept, res_dept_date) "
-            "VALUES ('%s', '%s', '%s', TO_DATE('%s', 'YYYY-MM-DD HH24:MI'))",
-            v_res_pt.arr, v_res_doctor.arr, v_res_dept.arr, v_res_date.arr);
+        // SQL INSERT 문 실행
+        EXEC SQL INSERT INTO reservation (
+            res_pt, res_birth, res_phone, res_gender, res_dept, res_dept_date
+        ) VALUES (
+            :v_res_pt, :v_res_birth, :v_res_phone, :v_res_gender, :v_res_dept, 
+            TO_DATE(:v_res_date, 'YYYY-MM-DD HH24:MI')
+        );
 
-        // SQL ����
-        Error_flag = 0;
-        EXEC SQL EXECUTE IMMEDIATE : sqlstmt;
-
-        if (Error_flag == 0) { // ���� ���� ��
-            printf("\n������ ���������� �߰��Ǿ����ϴ�. �ƹ� Ű�� �Է��ϼ���.\n");
-            EXEC SQL COMMIT WORK;
-            getch();
+        if (sqlca.sqlcode == 0) { // SQL 실행 성공
+            printf("\n예약이 성공적으로 추가되었습니다. 아무 키나 입력하세요.\n");
+            EXEC SQL COMMIT WORK;  // 트랜잭션 커밋
+            getch();               // 사용자 입력 대기
+        } else { // SQL 실행 중 오류 발생
+            printf("\n예약 추가 중 오류가 발생했습니다. 아무 키나 입력하세요.\n");
+            EXEC SQL ROLLBACK WORK;  // 트랜잭션 롤백
+            getch();                // 사용자 입력 대기
         }
-        else { // ���� �߻� ��
-            printf("\n���� �߰� �� ������ �߻��߽��ϴ�. �ƹ� Ű�� �Է��ϼ���.\n");
-            EXEC SQL ROLLBACK WORK;
-            getch();
-        }
-    }
-    else {
-        printf("\n���� �߰��� ��ҵǾ����ϴ�. �ƹ� Ű�� �Է��ϼ���.\n");
-        getch();
+    } else { // 사용자가 저장을 취소한 경우
+        printf("\n예약 추가가 취소되었습니다. 아무 키나 입력하세요.\n");
+        getch();  // 사용자 입력 대기
     }
 }
