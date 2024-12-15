@@ -184,6 +184,7 @@ static const short sqlcud0[] =
 
 /*---------------  화면 커서 위치 제어 ----------------------*/
 #include < windows.h >
+#include "../../../../../proc_sdk/precomp/admin/sqlca.h"
 void gotoxy(int x, int y) ;
 void getxy(int *x, int *y) ;
 void clrscr(void) ;
@@ -194,6 +195,7 @@ void select_tuple();
 void insert_tuple();
 void delete_tuple();
 void update_tuple();
+//void reserve_tuple();
 void sql_error();
 
 int Error_flag = 0;

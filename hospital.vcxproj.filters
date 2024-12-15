@@ -15,7 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\바탕 화면\데이터베이스응용\새 폴더\proc_sample.pc">
+    <None Include="vcpkg.json" />
+    <None Include="proc_sample.pc">
       <Filter>소스 파일</Filter>
     </None>
   </ItemGroup>

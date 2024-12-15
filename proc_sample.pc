@@ -1,6 +1,6 @@
-// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä§ : 2024.11.5
-// win32 Visual C 2010 ï¿½Ì»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½ ï¿½ß°ï¿½
-// ï¿½ï¿½ï¿½Î±×·ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¹ ï¿½Ù¿ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½
+// ¸¶Áö¸·°íÄ§ : 2024.11.5
+// win32 Visual C 2010 ÀÌ»óÄÄÆÄÀÏ½Ã Ãß°¡
+// ÇÁ·Î±×·¥ °¡Àå Ã¹ ÁÙ¿¡ Ãß°¡ÇÒ °Í
 #define _CRT_SECURE_NO_WARNINGS
 //-----------------------------------------
 #include <stdio.h>
@@ -15,11 +15,11 @@
 #include <sqlcpr.h>
 
 
-// win32 Visual C 2010 ï¿½Ì»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½ ï¿½ß°ï¿½
+// win32 Visual C 2010 ÀÌ»óÄÄÆÄÀÏ½Ã Ãß°¡
 #define getch() _getch()
 //-----------------------------------------
 
-/*---------------  È­ï¿½ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ ----------------------*/
+/*---------------  È­¸é Ä¿¼­ À§Ä¡ Á¦¾î ----------------------*/
 #include < windows.h >
 void gotoxy(int x, int y) ;
 void getxy(int *x, int *y) ;
@@ -38,15 +38,15 @@ void main()
 {
     char c = 0;
 
-    _putenv("NLS_LANG=American_America.KO16KSC5601");  //ï¿½Ñ±Û»ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½
+    _putenv("NLS_LANG=American_America.KO16KSC5601");  //ÇÑ±Û»ç¿ë½Ã ÇÊ¿äÇÔ
 
    /* Register sql_error() as the error handler. */
-    EXEC SQL WHENEVER SQLERROR DO sql_error("\7ï¿½ï¿½ï¿½ï¿½ï¿½ß»ï¿½:");
+    EXEC SQL WHENEVER SQLERROR DO sql_error("\7¿¡·¯¹ß»ý:");
 
     db_connect();
 
     while( c != '5') {  
-        // ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½ï¿½ï¿½
+        // ¸ÞÀÎ È­¸é Ãâ·Â
         clrscr();
 
         print_screen("scr_main.txt") ;
@@ -54,7 +54,7 @@ void main()
 
         
         c = getchar() ;
-        while (getchar() != '\n');  // Ã¹ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
+        while (getchar() != '\n');  // Ã¹±ÛÀÚ ¿Ü ³ª¸ÓÁö ÀÔ·Â ¹ö¸²
 
         switch(c){
             case '1' : select_tuple();
@@ -88,10 +88,10 @@ void db_connect()
 
     Error_flag = 0 ;  
 
-   // ï¿½Æ·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ï¸ï¿½ error Ã³ï¿½ï¿½ ï¿½ï¿½Æ¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½. Error_flag=1ï¿½ï¿½ ï¿½Ù²ï¿½ 
+   // ¾Æ·¡ ¹®Àå ¼öÇà Áß¿¡ ¿¡·¯°¡ ¹ß»ýÇÏ¸é error Ã³¸® ·çÆ¾À¸·Î °¨. Error_flag=1·Î ¹Ù²ñ 
     EXEC SQL CONNECT :uid IDENTIFIED BY :pwd;
 
-    // connectionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Îºï¿½
+    // connectionÀÌ ½ÇÆÐÇßÀ»°æ¿ìÀÇ Ã³¸®ºÎºÐ
     if ( Error_flag ==1 ){
         //printf("Connect error: %s", sqlca.sqlerrm.sqlerrmc);
         exit(-1);
@@ -118,7 +118,7 @@ EXEC SQL END DECLARE SECTION;
 
    int x, y, count=0, i ;
 
-   /* ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ */
+   /* »ç¿ëÀÚ ÀÔ·Â */
    clrscr();
 
    print_screen("scr_select.txt");
@@ -129,11 +129,11 @@ EXEC SQL END DECLARE SECTION;
    gotoxy(57,5);
    gets(name_temp);
       
-   /* ï¿½ï¿½ï¿½ï¿½ï¿½Å³ SQL ï¿½ï¿½ï¿½ï¿½*/
+   /* ½ÇÇà½ÃÅ³ SQL ¹®Àå*/
    sprintf(sqlstmt,"SELECT empno, ename, job FROM emp where to_char(empno) LIKE '%%%s%%' and ename LIKE '%%%s%%'  ",
                     no_temp, name_temp); 
 
-   /* select ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È­ï¿½é¿¡ ï¿½ï¿½îº½ */
+   /* select ¹®ÀåÀÌ Á¦´ë·Î ±¸¼ºµÇ¾î ÀÖ´ÂÁö È­¸é¿¡ Âï¾îº½ */
    //printf("sqlstmt:%s\n", sqlstmt);
 
    EXEC SQL PREPARE S FROM :sqlstmt ;
@@ -147,13 +147,13 @@ EXEC SQL END DECLARE SECTION;
    x = 14;
    y = 10 ;
 
-   // EXEC SQL WHENEVER NOT FOUND DO break ;  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì·ï¿½ï¿½ï¿½ ï¿½Ø¾ï¿½ ï¿½Ï´Âµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+   // EXEC SQL WHENEVER NOT FOUND DO break ;  ¿ø·¡´Â ÀÌ·¸°Ô ÇØ¾ß ÇÏ´Âµ¥ ¹ö±× ¶§¹®¿¡ ¾Æ·¡¿Í °°ÀÌ »ç¿ëÇÔ
    while(1)
     {
         /* 3. tuple fetch */
         EXEC SQL FETCH c_cursor INTO :v_empno, :v_ename, :v_job;
        
-        if(sqlca.sqlcode == 1403) {  // ï¿½ï¿½ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        if(sqlca.sqlcode == 1403) {  // ´õÀÌ»ó °¡Á®¿Ã ÅõÇÃÀÌ ¾ø´Â °æ¿ì
             break;
         }
         v_empno.arr[v_empno.len] = '\0' ;
@@ -169,7 +169,7 @@ EXEC SQL END DECLARE SECTION;
             count = 0;
             getch();
 
-            gotoxy(0,10); //ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½Îºï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
+            gotoxy(0,10); //ÀÌÀü È­¸é ºÎºÐ Å¬¸®¾î
             for(i= 0; i < PAGE_NUM; i++){
                 printf("                                                                                               \n");
             }
@@ -182,7 +182,7 @@ EXEC SQL END DECLARE SECTION;
     /* 4. close the cursor. */
     EXEC SQL CLOSE c_cursor;
 
-    getch();   // ï¿½Æ¹ï¿½Å°ï¿½ï¿½ Ä¡ï¿½ï¿½ï¿½ï¿½. 
+    getch();   // ¾Æ¹«Å°³ª Ä¡¼¼¿ä. 
 
 }
 /*------------ insert -------------*/
@@ -203,20 +203,20 @@ EXEC SQL END DECLARE SECTION;
    clrscr();
    print_screen("scr_insert.txt");
 
-   /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ */
+   /* µ¥ÀÌÅÍ ÀÔ·Â */
     x = 40;
     y = 6 ;
 
-   /* ï¿½ï¿½ï¿½ï¿½ï¿½È£ ï¿½Ô·ï¿½ */
+   /* »ç¿ø¹øÈ£ ÀÔ·Â */
     gotoxy(x,y)  ; 
     gets(v_empno );
     
-   /* ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½Ô·ï¿½ */
+   /* »ç¿ø ÀÌ¸§ ÀÔ·Â */
     y = y + 2 ;
     gotoxy(x,y)  ;
     gets(v_ename);
 
-   /* ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ */
+   /* Á÷±Þ ÀÔ·Â */
     y = y + 2 ;
     gotoxy(x,y) ;
     gets(v_job);
@@ -225,21 +225,21 @@ EXEC SQL END DECLARE SECTION;
 
     // printf("sqlstmt:%s\n", sqlstmt);
 
-   /* insert ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+   /* insert ¹® ½ÇÇà */
     Error_flag = 0 ;
 
-   // ï¿½Æ·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ï¸ï¿½ error Ã³ï¿½ï¿½ ï¿½ï¿½Æ¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½. Error_flag=1ï¿½ï¿½ ï¿½Ù²ï¿½ 
+   // ¾Æ·¡ ¹®Àå ¼öÇà Áß¿¡ ¿¡·¯°¡ ¹ß»ýÇÏ¸é error Ã³¸® ·çÆ¾À¸·Î °¨. Error_flag=1·Î ¹Ù²ñ 
     EXEC SQL EXECUTE IMMEDIATE :sqlstmt ;
 
-    if( Error_flag == 0 ) {  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½
+    if( Error_flag == 0 ) {  // Á¤»óÀûÀ¸·Î ¼öÇà µÇ´Â °æ¿ì
         printf("\n");	
-        printf(" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.  ï¿½Æ¹ï¿½Å°ï¿½ï¿½ Ä¡ï¿½ï¿½ï¿½ï¿½ \n" ) ;
+        printf(" Á¤»óÀûÀ¸·Î Ãß°¡µÇ¾ú½À´Ï´Ù.  ¾Æ¹«Å°³ª Ä¡¼¼¿ä \n" ) ;
         EXEC SQL COMMIT WORK ;
         getch();
     }
     else {
         printf("\n");	
-        printf(" Æ©ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½. ï¿½Æ¹ï¿½Å°ï¿½ï¿½ Ä¡ï¿½ï¿½ï¿½ï¿½ \n" ) ;
+        printf(" Æ©ÇÃÀÌ Ãß°¡µÇÁö ¾Ê¾Ò½À´Ï´Ù. ¾Æ¹«Å°³ª Ä¡¼¼¿ä \n" ) ;
         EXEC SQL ROLLBACK WORK ;
         getch();
     }
@@ -274,7 +274,7 @@ int i;
     gotoxy(x,y)  ; 
     gets(findno) ;
 
-/*------  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ----------------*/
+/*------  ¼öÁ¤ÇÒ ÅõÇÃÀ» ¸ÕÀú Ã£¾Æ¼­ »ç¿ëÀÚ¿¡°Ô º¸¿©ÁÜ ----------------*/
 
     sprintf(sqlstmt,"SELECT empno, ename, job  FROM emp where empno = %s", findno) ;
 
@@ -290,7 +290,7 @@ int i;
     {
         EXEC SQL FETCH u_cursor INTO :v_empno, :v_ename, :v_job ;
 
-        if(sqlca.sqlcode == 1403) {  // ï¿½ï¿½ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        if(sqlca.sqlcode == 1403) {  // ´õÀÌ»ó °¡Á®¿Ã ÅõÇÃÀÌ ¾ø´Â °æ¿ì
             break;
         }
 
@@ -299,36 +299,36 @@ int i;
         v_job.arr[v_job.len] = '\0';
 
         printf("\n");
-        printf("                            ï¿½ï¿½ï¿½ï¿½ï¿½È£:%s    ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½:%s   ï¿½ï¿½ï¿½ï¿½:%s \n", v_empno.arr, v_ename.arr, v_job.arr );
+        printf("                            »ç¿ø¹øÈ£:%s    »ç¿øÀÌ¸§:%s   Á÷±Þ:%s \n", v_empno.arr, v_ename.arr, v_job.arr );
     }
     EXEC SQL CLOSE u_cursor; 
 
-    /*  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ ï¿½ï¿½ */
+    /*  °¡Á®¿Â ÅõÇÃÀÌ ÇÏ³ªµµ ¾ø´Â °æ¿ì´Â ¸Þ½ÃÁö Ãâ·Â ÈÄ µ¹¾Æ°¡¾ß ÇÔ */
     if ( sqlca.sqlerrd[2] == 0 ) {
-        printf("ï¿½Ë»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!!!  ï¿½Æ¹ï¿½Å°ï¿½ï¿½ Ä¡ï¿½ï¿½ï¿½ï¿½");
+        printf("°Ë»öµÈ ÅõÇÃÀÌ ¾ø½À´Ï´Ù!!!  ¾Æ¹«Å°³ª Ä¡¼¼¿ä");
         getch();
         return ;
     }
 
-    //---------- update Ã³ï¿½ï¿½ --------------
- /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ */
+    //---------- update Ã³¸® --------------
+ /* ¼öÁ¤ µ¥ÀÌÅÍ ÀÔ·Â */
     x = 40;
     y = 12 ;
 
-   /* ï¿½ï¿½ï¿½ï¿½ï¿½È£ ï¿½Ô·ï¿½ */
+   /* »ç¿ø¹øÈ£ ÀÔ·Â */
     gotoxy(x,y)  ; 
     gets(no);
     if( no[0] == '\0' ){
         strcpy(no, v_empno.arr);
    }
-   /* ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½Ô·ï¿½ */
+   /* »ç¿ø ÀÌ¸§ ÀÔ·Â */
     y = y + 2 ;
     gotoxy(x,y)  ;
     gets(name);
     if( name[0] == '\0' ){
         strcpy(name, v_ename.arr);
    }
-   /* ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ */
+   /* Á÷±Þ ÀÔ·Â */
     y = y + 2 ;
     gotoxy(x,y) ;
     gets(job);
@@ -338,21 +338,21 @@ int i;
     sprintf(sqlstmt,"update emp set empno = %s, ename= '%s', job = '%s' where empno = %s ", no, name, job, findno);
     //printf("stmt:%s\n", sqlstmt);
     
-     /* updateï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+     /* update¹® ½ÇÇà */
     Error_flag = 0 ;
 
-   // ï¿½Æ·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ï¸ï¿½ error Ã³ï¿½ï¿½ ï¿½ï¿½Æ¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½. Error_flag=1ï¿½ï¿½ ï¿½Ù²ï¿½ 
+   // ¾Æ·¡ ¹®Àå ¼öÇà Áß¿¡ ¿¡·¯°¡ ¹ß»ýÇÏ¸é error Ã³¸® ·çÆ¾À¸·Î °¨. Error_flag=1·Î ¹Ù²ñ 
     EXEC SQL EXECUTE IMMEDIATE :sqlstmt ;
 
-    if( Error_flag == 0 ) {  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½
+    if( Error_flag == 0 ) {  // Á¤»óÀûÀ¸·Î ¼öÇà µÇ´Â °æ¿ì
         printf("\n");	
-        printf(" ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½. ï¿½Æ¹ï¿½Å°ï¿½ï¿½ Ä¡ï¿½ï¿½ï¿½ï¿½ \n" ) ;
+        printf(" ¼öÁ¤µÇ¾ú½À´Ï´Ù. ¾Æ¹«Å°³ª Ä¡¼¼¿ä \n" ) ;
         EXEC SQL COMMIT WORK ;
         getch();
     }
     else {
         printf("\n");	
-        printf(" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½. ï¿½Æ¹ï¿½Å°ï¿½ï¿½ Ä¡ï¿½ï¿½ï¿½ï¿½ \n" ) ;
+        printf(" ¼öÁ¤µÇÁö ¾Ê¾Ò½À´Ï´Ù. ¾Æ¹«Å°³ª Ä¡¼¼¿ä \n" ) ;
         EXEC SQL ROLLBACK WORK ;
         getch();
     }
@@ -386,7 +386,7 @@ int i;
     gotoxy(x,y)  ; 
     gets(no) ;
 
-/*------ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ----------------*/
+/*------ »èÁ¦ÇÒ ÅõÇÃÀ» ¸ÕÀú Ã£¾Æ¼­ »ç¿ëÀÚ¿¡°Ô º¸¿©ÁÜ ----------------*/
 
     sprintf(sqlstmt, "SELECT res_pt, TO_CHAR(res_dept_date, 'YYYY-MM-DD') FROM reservation WHERE res_no = %s", no);
 
@@ -402,54 +402,54 @@ int i;
     {
         EXEC SQL FETCH d_cursor INTO :v_res_pt, :v_res_dept_date ;
 
-        if(sqlca.sqlcode == 1403) {  // ï¿½ï¿½ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        if(sqlca.sqlcode == 1403) {  // ´õÀÌ»ó °¡Á®¿Ã ÅõÇÃÀÌ ¾ø´Â °æ¿ì
             break;
         }
 
         v_res_pt.arr[v_res_pt.len] = '\0';
         v_res_dept_date.arr[v_res_dept_date.len] = '\0';
         printf("\n\n");
-        printf("                                È¯ï¿½Ú¼ï¿½ï¿½ï¿½:%s    ï¿½ï¿½ï¿½à³¯Â¥:%s \n", v_res_pt.arr, v_res_dept_date.arr);
+        printf("                                È¯ÀÚ¼ºÇÔ:%s    ¿¹¾à³¯Â¥:%s \n", v_res_pt.arr, v_res_dept_date.arr);
     }
     EXEC SQL CLOSE d_cursor; 
 
-    /*  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ ï¿½ï¿½ */
+    /*  °¡Á®¿Â ÅõÇÃÀÌ ÇÏ³ªµµ ¾ø´Â °æ¿ì´Â ¸Þ½ÃÁö Ãâ·Â ÈÄ µ¹¾Æ°¡¾ß ÇÔ */
     if ( sqlca.sqlerrd[2] == 0 ) {
-        printf("ï¿½Ë»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!!!  ï¿½Æ¹ï¿½Å°ï¿½ï¿½ Ä¡ï¿½ï¿½ï¿½ï¿½");
+        printf("°Ë»öµÈ ÅõÇÃÀÌ ¾ø½À´Ï´Ù!!!  ¾Æ¹«Å°³ª Ä¡¼¼¿ä");
         getch();
         return ;
     }
 
-    // ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Îºï¿½
-    printf("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï½Ã°Ú½ï¿½ï¿½Ï±ï¿½? (y/n) :");   
+    // »èÁ¦ Ã³¸® ºÎºÐ
+    printf("À§ÀÇ ÅõÇÃµéÀ» »èÁ¦ÇÏ½Ã°Ú½À´Ï±î? (y/n) :");   
 
     flag = (char *)getchar() ;
-    while (getchar() != '\n');  // Ã¹ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
+    while (getchar() != '\n');  // Ã¹±ÛÀÚ ¿Ü ³ª¸ÓÁö ÀÔ·Â ¹ö¸²
 
     if( flag == 'y' || flag =='Y' ){
         sprintf(sqlstmt,"delete from reservation where res_no = %s ", no);
         //printf("stmt:%s\n", sqlstmt);
-        // ï¿½Æ·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ï¸ï¿½ error Ã³ï¿½ï¿½ ï¿½ï¿½Æ¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½. Error_flag=1ï¿½ï¿½ ï¿½Ù²ï¿½ 
+        // ¾Æ·¡ ¹®Àå ¼öÇà Áß¿¡ ¿¡·¯°¡ ¹ß»ýÇÏ¸é error Ã³¸® ·çÆ¾À¸·Î °¨. Error_flag=1·Î ¹Ù²ñ 
         Error_flag = 0 ;
         EXEC SQL EXECUTE IMMEDIATE :sqlstmt ;
 
-        if( Error_flag == 0 ) {  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½
+        if( Error_flag == 0 ) {  // Á¤»óÀûÀ¸·Î ¼öÇà µÇ´Â °æ¿ì
             printf("\n");	
-            printf(" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.  ï¿½Æ¹ï¿½Å°ï¿½ï¿½ Ä¡ï¿½ï¿½ï¿½ï¿½ \n" ) ;
+            printf(" Á¤»óÀûÀ¸·Î »èÁ¦µÇ¾ú½À´Ï´Ù.  ¾Æ¹«Å°³ª Ä¡¼¼¿ä \n" ) ;
             EXEC SQL COMMIT WORK ;
             getch();
         }
-        else {   //Error_falg == 1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        else {   //Error_falg == 1. ¿¡·¯°¡ ¹ß»ýµÈ °æ¿ì
             printf("\n");	
-            printf(" Æ©ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½. ï¿½Æ¹ï¿½Å°ï¿½ï¿½ Ä¡ï¿½ï¿½ï¿½ï¿½ \n" ) ;
+            printf(" Æ©ÇÃÀÌ »èÁ¦µÇÁö ¾Ê¾Ò½À´Ï´Ù. ¾Æ¹«Å°³ª Ä¡¼¼¿ä \n" ) ;
             EXEC SQL ROLLBACK WORK ;
             getch();
         }
     }
-    else {    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    else {    // »èÁ¦ Ãë¼Ò
         printf("\n");	
-        printf("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½\n");
-        printf("ï¿½ï¿½ï¿½Î¸Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : ï¿½Æ¹ï¿½Å°ï¿½ï¿½ Ä¡ï¿½ï¿½ï¿½ï¿½. ");
+        printf("»èÁ¦ Ãë¼Ò\n");
+        printf("¸ÞÀÎ¸Þ´º·Î °¡±â : ¾Æ¹«Å°³ª Ä¡¼¼¿ä. ");
         getch();
     }
 
@@ -489,21 +489,21 @@ void sql_error(char *msg)
 
     EXEC SQL WHENEVER SQLERROR CONTINUE;
 
-    getxy(&x, &y);  // ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
+    getxy(&x, &y);  // ÇöÀç Ä¿¼­ À§Ä¡ ÀúÀå
 
-    Error_flag = 1;    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    Error_flag = 1;    //¿¡·¯°¡ ¹ß»ýµÊÀ» ¼ÂÆÃÇÔ
 
-    gotoxy(1,22) ;   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù·ï¿½ ï¿½Ìµï¿½
+    gotoxy(1,22) ;   //¸¶Áö¸· ÁÙ·Î ÀÌµ¿
 
     printf("%s", msg);
     buf_len = sizeof (err_msg);
     sqlglm(err_msg, &buf_len, &msg_len);
     printf("%.*s\n", msg_len, err_msg);
 
-    gotoxy(x, y) ;   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ìµï¿½
+    gotoxy(x, y) ;   // ÀúÀåÇØ µÎ¾ú´ø ¿ø·¡ Ä¿¼­ À§Ä¡·Î ÀÌµ¿
     //getch();
 }
-/*---------------  È­ï¿½ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ --------------------*/
+/*---------------  È­¸é Ä¿¼­ Á¦¾î ÇÔ¼ö --------------------*/
 #define STD_HANDLE GetStdHandle(STD_OUTPUT_HANDLE)
 
 void gotoxy(int x, int y)
@@ -534,148 +534,3 @@ void clrscr(void)
 }
 
 /*---------------------------------------------------------*/
-void view_departments() {
-    EXEC SQL BEGIN DECLARE SECTION;
-    varchar dept_id[10];       // ì§„ë£Œê³¼ ID
-    varchar dept_name[100];    // ì§„ë£Œê³¼ ì´ë¦„
-    EXEC SQL END DECLARE SECTION;
-
-    int x = 10, y = 6;         // ì¶œë ¥ ìœ„ì¹˜ ì¢Œí‘œ
-    int count = 0;             // ì¶œë ¥í•œ í•­ëª© ìˆ˜
-
-    // í™”ë©´ ì´ˆê¸°í™” ë° ì¶œë ¥
-    clrscr();
-    print_screen("scr_view_departments.txt");
-
-    // SQL SELECT ì‹¤í–‰
-    EXEC SQL DECLARE dept_cursor CURSOR FOR
-        SELECT dept_id, dept_name FROM department;
-
-    EXEC SQL OPEN dept_cursor;
-
-    // ë°ì´í„° ì¶œë ¥
-    printf("\nì§„ë£Œê³¼ ëª©ë¡:\n");
-    printf("----------------------------------------\n");
-    printf("| ID       | ì´ë¦„                      |\n");
-    printf("----------------------------------------\n");
-
-    while (1) {
-        EXEC SQL FETCH dept_cursor INTO :dept_id, :dept_name;
-
-        // ë°ì´í„°ê°€ ë” ì´ìƒ ì—†ìœ¼ë©´ ì¢…ë£Œ
-        if (sqlca.sqlcode == 1403) { // No data found
-            break;
-        }
-
-        // SQL ì˜¤ë¥˜ ì²˜ë¦¬
-        if (sqlca.sqlcode < 0) {
-            printf("\në°ì´í„°ë¥¼ ê°€ì ¸ì˜¤ëŠ” ì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤. ì•„ë¬´ í‚¤ë‚˜ ìž…ë ¥í•˜ì„¸ìš”.\n");
-            getch();
-            EXEC SQL CLOSE dept_cursor;
-            return;
-        }
-
-        // NULL ì¢…ë£Œ ì²˜ë¦¬
-        dept_id.arr[dept_id.len] = '\0';
-        dept_name.arr[dept_name.len] = '\0';
-
-        // ë°ì´í„° ì¶œë ¥
-        gotoxy(x, y);
-        printf("| %-8s | %-25s |\n", dept_id.arr, dept_name.arr);
-        y++;
-        count++;
-
-        // í•œ í™”ë©´ì— 10ê°œì”© ì¶œë ¥ í›„ ëŒ€ê¸°
-        if (count % 10 == 0) {
-            printf("\n----------------------------------------\n");
-            printf("ì¶”ê°€ ëª©ë¡ì„ ë³´ë ¤ë©´ ì•„ë¬´ í‚¤ë‚˜ ëˆ„ë¥´ì„¸ìš”.\n");
-            getch();
-            clrscr();
-            y = 6; // ì¶œë ¥ ìœ„ì¹˜ ì´ˆê¸°í™”
-        }
-    }
-
-    EXEC SQL CLOSE dept_cursor;
-
-    // ìµœì¢… ê²°ê³¼ ì¶œë ¥
-    printf("\n----------------------------------------\n");
-    printf("ì´ ì§„ë£Œê³¼ ìˆ˜: %d\n", count);
-    printf("ëª©ë¡ì„ ë³´ë ¤ë©´ ì•„ë¬´ í‚¤ë‚˜ ëˆ„ë¥´ì„¸ìš”.\n");
-    getch();
-}
-
-/*---------------------------------------------------------*/
-void reserve_tuple() {
-    // SQL ë³€ìˆ˜ ì„ ì–¸ ì„¹ì…˜ ì‹œìž‘
-    EXEC SQL BEGIN DECLARE SECTION;
-    varchar v_res_pt[100];      // í™˜ìž ì´ë¦„
-    varchar v_res_birth[20];    // í™˜ìž ìƒë…„ì›”ì¼ (YYYY-MM-DD í˜•ì‹)
-    varchar v_res_phone[20];    // ì „í™”ë²ˆí˜¸
-    varchar v_res_gender[10];   // ì„±ë³„ (ë‚¨/ì—¬)
-    varchar v_res_dept[100];    // ì§„ë£Œê³¼
-    varchar v_res_date[100];    // ì˜ˆì•½ ë‚ ì§œ (YYYY-MM-DD HH24:MI í˜•ì‹)
-    EXEC SQL END DECLARE SECTION;
-
-    char confirm;               // ì˜ˆì•½ í™•ì¸ ì—¬ë¶€ë¥¼ ë°›ì„ ë³€ìˆ˜
-    int x, y;                   // í™”ë©´ ì¶œë ¥ ì¢Œí‘œ ë³€ìˆ˜
-
-    // í™”ë©´ ì´ˆê¸°í™” ë° ì˜ˆì•½ ìž…ë ¥ í™”ë©´ ì¶œë ¥
-    clrscr();
-    print_screen("scr_add_reservation.txt");
-
-    // ì˜ˆì•½ ì •ë³´ ìž…ë ¥ ë°›ê¸°
-    x = 39;
-    y = 6;
-    gotoxy(x, y);               // ìž…ë ¥ ìœ„ì¹˜ ì„¤ì •
-    printf("í™˜ìž ì´ë¦„: ");
-    fgets(v_res_pt.arr, sizeof(v_res_pt.arr), stdin); // í™˜ìž ì´ë¦„ ìž…ë ¥
-    v_res_pt.len = strlen(v_res_pt.arr) - 1;         // ê°œí–‰ ë¬¸ìž ì œê±°
-
-    printf("\n                            ìƒë…„ì›”ì¼ (YYYY-MM-DD): ");
-    fgets(v_res_birth.arr, sizeof(v_res_birth.arr), stdin); // ìƒë…„ì›”ì¼ ìž…ë ¥
-    v_res_birth.len = strlen(v_res_birth.arr) - 1;
-
-    printf("\n                            ì „í™”ë²ˆí˜¸: ");
-    fgets(v_res_phone.arr, sizeof(v_res_phone.arr), stdin); // ì „í™”ë²ˆí˜¸ ìž…ë ¥
-    v_res_phone.len = strlen(v_res_phone.arr) - 1;
-
-    printf("\n                            ì„±ë³„ (ë‚¨/ì—¬): ");
-    fgets(v_res_gender.arr, sizeof(v_res_gender.arr), stdin); // ì„±ë³„ ìž…ë ¥
-    v_res_gender.len = strlen(v_res_gender.arr) - 1;
-
-    printf("\n                            ì§„ë£Œê³¼: ");
-    fgets(v_res_dept.arr, sizeof(v_res_dept.arr), stdin); // ì§„ë£Œê³¼ ìž…ë ¥
-    v_res_dept.len = strlen(v_res_dept.arr) - 1;
-
-    printf("\n                            ì˜ˆì•½ì¼ (YYYY-MM-DD HH24:MI): ");
-    fgets(v_res_date.arr, sizeof(v_res_date.arr), stdin); // ì˜ˆì•½ ë‚ ì§œ ìž…ë ¥
-    v_res_date.len = strlen(v_res_date.arr) - 1;
-
-    // ìž…ë ¥ ë‚´ìš© í™•ì¸ ë° ë°ì´í„°ë² ì´ìŠ¤ì— ì €ìž¥
-    printf("\nìž…ë ¥í•˜ì‹  ì •ë³´ë¥¼ ì €ìž¥í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ");
-    confirm = getchar();        // ì‚¬ìš©ìž í™•ì¸ ìž…ë ¥ ë°›ê¸°
-    while (getchar() != '\n');  // ìž…ë ¥ ë²„í¼ ì´ˆê¸°í™”
-
-    if (confirm == 'y' || confirm == 'Y') {
-        // SQL INSERT ë¬¸ ì‹¤í–‰
-        EXEC SQL INSERT INTO reservation (
-            res_pt, res_birth, res_phone, res_gender, res_dept, res_dept_date
-        ) VALUES (
-            :v_res_pt, :v_res_birth, :v_res_phone, :v_res_gender, :v_res_dept, 
-            TO_DATE(:v_res_date, 'YYYY-MM-DD HH24:MI')
-        );
-
-        if (sqlca.sqlcode == 0) { // SQL ì‹¤í–‰ ì„±ê³µ
-            printf("\nì˜ˆì•½ì´ ì„±ê³µì ìœ¼ë¡œ ì¶”ê°€ë˜ì—ˆìŠµë‹ˆë‹¤. ì•„ë¬´ í‚¤ë‚˜ ìž…ë ¥í•˜ì„¸ìš”.\n");
-            EXEC SQL COMMIT WORK;  // íŠ¸ëžœìž­ì…˜ ì»¤ë°‹
-            getch();               // ì‚¬ìš©ìž ìž…ë ¥ ëŒ€ê¸°
-        } else { // SQL ì‹¤í–‰ ì¤‘ ì˜¤ë¥˜ ë°œìƒ
-            printf("\nì˜ˆì•½ ì¶”ê°€ ì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤. ì•„ë¬´ í‚¤ë‚˜ ìž…ë ¥í•˜ì„¸ìš”.\n");
-            EXEC SQL ROLLBACK WORK;  // íŠ¸ëžœìž­ì…˜ ë¡¤ë°±
-            getch();                // ì‚¬ìš©ìž ìž…ë ¥ ëŒ€ê¸°
-        }
-    } else { // ì‚¬ìš©ìžê°€ ì €ìž¥ì„ ì·¨ì†Œí•œ ê²½ìš°
-        printf("\nì˜ˆì•½ ì¶”ê°€ê°€ ì·¨ì†Œë˜ì—ˆìŠµë‹ˆë‹¤. ì•„ë¬´ í‚¤ë‚˜ ìž…ë ¥í•˜ì„¸ìš”.\n");
-        getch();  // ì‚¬ìš©ìž ìž…ë ¥ ëŒ€ê¸°
-    }
-}
